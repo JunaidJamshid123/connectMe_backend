@@ -161,8 +161,78 @@ async function syncUserData(req, res) {
     }
 }
 
+// Get all users
+async function getAllUsers(req, res) {
+    try {
+        db.all(
+            'SELECT id as userId, username, email, fullName, phoneNumber, profilePicture, coverPhoto, bio, onlineStatus, createdAt, lastSeen FROM users',
+            async (err, rows) => {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+
+                res.status(200).json(rows);
+            }
+        );
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// Search users by username
+async function searchUsers(req, res) {
+    try {
+        const { username } = req.query;
+        
+        if (!username || username.trim() === '') {
+            return res.status(400).json({ error: 'Search term is required' });
+        }
+        
+        const users = await User.searchByUsername(username);
+        
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error searching users:', error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// Get user's followers
+async function getUserFollowers(req, res) {
+    try {
+        const { userId } = req.params;
+        
+        const followers = await User.getFollowers(userId);
+        
+        res.status(200).json(followers);
+    } catch (error) {
+        console.error('Error fetching followers:', error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// Get users being followed by a user
+async function getUserFollowing(req, res) {
+    try {
+        const { userId } = req.params;
+        
+        const following = await User.getFollowing(userId);
+        
+        res.status(200).json(following);
+    } catch (error) {
+        console.error('Error fetching following:', error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// Export these new functions
 module.exports = {
     getUserProfile,
     updateUserProfile,
-    syncUserData
+    syncUserData,
+    getAllUsers,
+    searchUsers,
+    getUserFollowers,
+    getUserFollowing
 };

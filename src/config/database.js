@@ -52,15 +52,7 @@ function initializeDatabase() {
             FOREIGN KEY (followingId) REFERENCES users(id)
         )`);
 
-        // Blocked users table
-        db.run(`CREATE TABLE IF NOT EXISTS blocked_users (
-            userId TEXT,
-            blockedId TEXT,
-            createdAt INTEGER,
-            PRIMARY KEY (userId, blockedId),
-            FOREIGN KEY (userId) REFERENCES users(id),
-            FOREIGN KEY (blockedId) REFERENCES users(id)
-        )`);
+     
 
         console.log('✅ Database tables initialized');
     });

@@ -5,6 +5,12 @@ const cors = require('cors');
 const { initializeDatabase } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const postRoutes = require('./routes/postRoutes');
+const storyRoutes = require('./routes/storyRoutes');
+
+// Add this with your other routes
+
 
 // Initialize express app
 const app = express();
@@ -20,6 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/stories', storyRoutes);
 
 
 
